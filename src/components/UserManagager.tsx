@@ -10,12 +10,12 @@ const UserManagager = () => {
   const [users, setUsers] = useState<User[]>([
     {
       id: 1,
-      name: "John Doe",
+      name: "John",
       friends: [2, 3],
     },
     {
       id: 2,
-      name: "Jane Doe",
+      name: "Doe",
       friends: [1, 3],
     },
     {
@@ -67,7 +67,11 @@ const UserManagager = () => {
   };
 
   const generateId = () => {
-    return Math.floor(Math.random() * 1000);
+    const id = Math.floor(Math.random() * 1000);
+    if (findUserById(id)) {
+      return generateId();
+    }
+    return id;
   };
 
   const handleNewOperation = () => {
