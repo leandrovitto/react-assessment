@@ -1,20 +1,18 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { User } from "../models";
-import ListFriends from "./ListFriends";
 import AddFriends from "./AddFriends";
+import ListFriends from "./ListFriends";
 
 const NewUser = ({
   onClose,
   onSave,
   onNewUser,
-  users,
   userToEdit,
 }: {
   onClose: (user: User) => void;
   onNewUser: () => void;
   onSave: (user: User) => void;
-  users: User[];
-  userToEdit: User | null;
+  userToEdit: User | undefined;
 }) => {
   const [user, setUser] = useState<User>(
     userToEdit || {
@@ -36,6 +34,10 @@ const NewUser = ({
     onClose(user);
   };
 
+  if (!userToEdit) {
+    return <div>User not Found!</div>;
+  }
+
   return (
     <div style={{ padding: "10px" }}>
       {userToEdit?.name ? <h5>Edit User</h5> : <h5>New User</h5>}
@@ -55,24 +57,8 @@ const NewUser = ({
       <p>Friends</p>
       <div>
         <button onClick={onNewUser}>Add New Friend</button>
-        <AddFriends
-          userToEdit={user}
-          listUsers={users}
-          onChange={(friends) => {
-            setUser({ ...user, friends });
-          }}
-        />
-
-        <ListFriends
-          onRemoveFriend={(id: number) => {
-            setUser({
-              ...user,
-              friends: user.friends.filter((f) => f !== id),
-            });
-          }}
-          userFriends={user.friends}
-          listUsers={users}
-        />
+        <AddFriends userToEdit={user} />
+        <ListFriends userToEdit={user} />
       </div>
 
       <hr></hr>

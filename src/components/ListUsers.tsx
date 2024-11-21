@@ -1,16 +1,12 @@
-import { User } from "../models";
+import { useUsersContext } from "./UsersContext";
 
-const ListUsers = ({
-  users,
-  onOpen,
-}: {
-  users: User[];
-  onOpen: (id: number) => void;
-}) => {
+const ListUsers = ({ onOpen }: { onOpen: (id: number) => void }) => {
+  const { getUsers } = useUsersContext();
+
   return (
     <div>
       <ul>
-        {users.map((user, index) => (
+        {getUsers().map((user, index) => (
           <li key={index} onClick={() => onOpen(user.id)}>
             {user.name} | Friends: {user.friends.length}
           </li>

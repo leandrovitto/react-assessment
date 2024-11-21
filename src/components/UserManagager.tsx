@@ -1,37 +1,14 @@
 import { useState } from "react";
 import { User } from "../models";
 import ListUsers from "./ListUsers";
+import { useUsersContext } from "./UsersContext";
 import Modal from "./modal/Modal";
 import NewUser from "./NewUser";
 
 const UserManagager = () => {
+  const idNewUser = -1;
   const [operations, addOperations] = useState<number[]>([]);
-
-  const [users, setUsers] = useState<User[]>([
-    {
-      id: 1,
-      name: "John",
-      friends: [2, 3],
-    },
-    {
-      id: 2,
-      name: "Doe",
-      friends: [1, 3],
-    },
-    {
-      id: 3,
-      name: "Alice",
-      friends: [1, 2],
-    },
-  ]);
-
-  const findUserById = (id: number) => {
-    return users.find((user) => user.id === id);
-  };
-
-  const findUserIndexById = (id: number) => {
-    return users.findIndex((user) => user.id === id);
-  };
+  const { getUser, addUser, editUser } = useUsersContext();
 
   const businessLockLogic = (index: number, ops: number[]) => {
     if (index < ops.length - 1) {
@@ -41,23 +18,12 @@ const UserManagager = () => {
     return true;
   };
 
-  const handleSaveElement = (user: User) => {
-    users.push(user);
-    setUsers([...users]);
-  };
-
-  const handleEditElement = (user: User) => {
-    const index = findUserIndexById(user.id);
-    users[index] = user;
-    setUsers([...users]);
-  };
-
   const handleSaveOrEditElement = (user: User) => {
-    const userToEdit = findUserById(user.id);
+    const userToEdit = getUser(user.id);
     if (userToEdit) {
-      handleEditElement(user);
+      editUser(user.id, user);
     } else {
-      handleSaveElement(user);
+      addUser({ ...user, id: generateId() });
     }
   };
 
@@ -68,28 +34,35 @@ const UserManagager = () => {
 
   const generateId = () => {
     const id = Math.floor(Math.random() * 1000);
-    if (findUserById(id)) {
+    if (getUser(id)) {
       return generateId();
     }
     return id;
   };
 
   const handleNewOperation = () => {
-    handleOpen(generateId());
+    handleOpen(idNewUser);
   };
 
-  const handleOpen = (id: number) => {
-    addOperations([...operations, id]);
+  const handleOpen = (userId: number) => {
+    addOperations([...operations, userId]);
   };
 
   return (
     <div>
-      {JSON.stringify(operations)}
+      {/*       {JSON.stringify(getUsers(), undefined, 2)}
+      <hr></hr>
+      {JSON.stringify(operations, undefined, 2)} */}
       <h5>List Users</h5>
 
-      <button onClick={handleNewOperation}>New User</button>
+      <button
+        onClick={handleNewOperation}
+        disabled={operations.some((i) => i == idNewUser)}
+      >
+        New User
+      </button>
 
-      {operations.map((operation, index) => (
+      {operations.map((operationId, index) => (
         <div key={index}>
           <Modal
             openModal={true}
@@ -112,19 +85,20 @@ const UserManagager = () => {
                 }
               }}
               userToEdit={
-                findUserById(operation) || {
-                  id: operation,
-                  name: "",
-                  friends: [],
-                }
+                operationId === idNewUser
+                  ? {
+                      id: operationId,
+                      name: "",
+                      friends: [],
+                    }
+                  : getUser(operationId)
               }
-              users={users}
             />
           </Modal>
         </div>
       ))}
 
-      <ListUsers users={users} onOpen={handleOpen} />
+      <ListUsers onOpen={handleOpen} />
     </div>
   );
 };

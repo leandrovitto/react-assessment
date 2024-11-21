@@ -1,10 +1,13 @@
 import "./App.css";
 import UserManagager from "./components/UserManagager";
+import UsersProvider from "./components/UsersProvider";
 
 function App() {
   return (
     <div>
-      <UserManagager />
+      <UsersProvider>
+        <UserManagager />
+      </UsersProvider>
     </div>
   );
 }

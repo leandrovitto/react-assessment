@@ -1,24 +1,15 @@
 import { User } from "../models";
+import { useUsersContext } from "./UsersContext";
 
-const AddFriends = ({
-  onChange,
-  userToEdit,
-  listUsers,
-}: {
-  onChange: (friends: number[]) => void;
-  listUsers: User[];
-  userToEdit: User;
-}) => {
-  const handleAddFriend = (id: number) => {
-    onChange([...userToEdit.friends, id]);
-  };
+const AddFriends = ({ userToEdit }: { userToEdit: User }) => {
+  const { getUsersWithoutMe, addFriend } = useUsersContext();
 
-  const getListFriendsWithoutMe = () => {
-    return listUsers.filter((f) => f.id !== userToEdit.id);
+  const handleAddFriend = (friendId: number) => {
+    addFriend(userToEdit.id, friendId);
   };
 
   const getListFriendWithoutSelected = () => {
-    return getListFriendsWithoutMe().filter(
+    return getUsersWithoutMe(userToEdit.id).filter(
       (f) => !userToEdit.friends.includes(f.id)
     );
   };
@@ -31,7 +22,7 @@ const AddFriends = ({
             handleAddFriend(+e.target.value);
           }}
           disabled={
-            userToEdit.friends.length == getListFriendsWithoutMe().length
+            userToEdit.friends.length == getUsersWithoutMe(userToEdit.id).length
           }
         >
           <option value="">Select Friend</option>

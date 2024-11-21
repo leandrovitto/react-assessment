@@ -1,25 +1,20 @@
 import { User } from "../models";
+import { useUsersContext } from "./UsersContext";
 
-const ListFriends = ({
-  onRemoveFriend,
-  userFriends,
-  listUsers,
-}: {
-  onRemoveFriend: (id: number) => void;
-  userFriends: number[];
-  listUsers: User[];
-}) => {
-  const getUser = (id: number) => {
-    return listUsers.find((u) => u.id === id);
+const ListFriends = ({ userToEdit }: { userToEdit: User }) => {
+  const { getFriends, removeFriend } = useUsersContext();
+
+  const handleRemoveFriend = (friendId: number) => {
+    removeFriend(userToEdit.id, friendId);
   };
 
   return (
     <div>
       <ul>
-        {userFriends.map((id, key) => (
+        {getFriends(userToEdit?.id).map((user, key) => (
           <li key={key} className="friendItem">
-            {getUser(id)?.name}
-            <div onClick={() => onRemoveFriend(id)}>X</div>
+            {user?.name}
+            <div onClick={() => handleRemoveFriend(user?.id)}>X</div>
           </li>
         ))}
       </ul>
