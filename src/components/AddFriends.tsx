@@ -1,11 +1,25 @@
 import { User } from "../models";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { useUsersContext } from "./UsersContext";
 
-const AddFriends = ({ userToEdit }: { userToEdit: User }) => {
-  const { getUsersWithoutMe, addFriend } = useUsersContext();
+const AddFriends = ({
+  userToEdit,
+  onAddFriend,
+}: {
+  userToEdit: User;
+  onAddFriend: (friendId: number) => void;
+}) => {
+  const { getUsersWithoutMe } = useUsersContext();
 
   const handleAddFriend = (friendId: number) => {
-    addFriend(userToEdit.id, friendId);
+    onAddFriend(friendId);
   };
 
   const getListFriendWithoutSelected = () => {
@@ -15,25 +29,28 @@ const AddFriends = ({ userToEdit }: { userToEdit: User }) => {
   };
 
   return (
-    <div>
-      <div>
-        <select
-          onChange={(e) => {
-            handleAddFriend(+e.target.value);
-          }}
-          disabled={
-            userToEdit.friends.length == getUsersWithoutMe(userToEdit.id).length
-          }
-        >
-          <option value="">Select Friend</option>
+    <Select
+      onValueChange={(value) => {
+        handleAddFriend(parseInt(value));
+      }}
+      disabled={
+        userToEdit.friends.length == getUsersWithoutMe(userToEdit.id).length
+      }
+      value=""
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a Friend" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
           {getListFriendWithoutSelected().map((friend) => (
-            <option key={friend.id} value={friend.id}>
+            <SelectItem key={friend.id} value={friend.id.toString()}>
               {friend.name}
-            </option>
+            </SelectItem>
           ))}
-        </select>
-      </div>
-    </div>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 };
 

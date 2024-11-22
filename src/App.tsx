@@ -1,4 +1,3 @@
-import "./App.css";
 import UserManagager from "./components/UserManagager";
 import UsersProvider from "./components/UsersProvider";
 

@@ -5,11 +5,9 @@ interface UsersContextType {
   addUser: (user: User) => void;
   deleteUser: (id: number) => void;
   editUser: (id: number, payload: User) => void;
-  addFriend: (id: number, friendId: number) => void;
-  removeFriend: (id: number, friendId: number) => void;
-  getFriends: (id: number) => User[];
+  getFriends: (friends: number[]) => User[];
   getUsers: () => User[];
-  getUser: (id: number) => User | undefined;
+  getUser: (id: number) => User | null;
   getUsersWithoutMe: (id: number) => User[];
 }
 

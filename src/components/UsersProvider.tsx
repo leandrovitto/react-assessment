@@ -61,36 +61,21 @@ const UsersProvider: React.FC<UsersProviderProps> = ({ children }) => {
     return u;
   };
 
-  const addFriend = (id: number, friendId: number) => {
-    const index = getUserIndexById(id);
-    users[index].friends.push(friendId);
-    setUsers([...users]);
-  };
-
-  const removeFriend = (id: number, friendId: number) => {
-    const index = getUserIndexById(id);
-    users[index].friends = users[index].friends.filter(
-      (friend) => friend !== friendId
-    );
-    setUsers([...users]);
-  };
-
-  const getFriends = (id: number) => {
-    const friends: User[] = [];
-    const user = getUser(id);
-    if (user && user.friends) {
-      user.friends.forEach((id) => {
+  const getFriends = (friends: number[]) => {
+    const out: User[] = [];
+    if (friends) {
+      friends.forEach((id) => {
         try {
           const u = getUser(id);
           if (u) {
-            friends.push(u);
+            out.push(u);
           }
         } catch (error) {
           console.log(error);
         }
       });
     }
-    return friends;
+    return out;
   };
 
   return (
@@ -99,8 +84,6 @@ const UsersProvider: React.FC<UsersProviderProps> = ({ children }) => {
         addUser,
         deleteUser,
         editUser,
-        addFriend,
-        removeFriend,
         getFriends,
         getUsers,
         getUser,
