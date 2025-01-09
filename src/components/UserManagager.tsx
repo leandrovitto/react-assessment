@@ -1,17 +1,10 @@
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import ListUsers from "./ListUsers";
-import Modal from "./modal/Modal";
 import NewOrEditUser, { idNewUser } from "./NewOrEditUser";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/dialog";
-import { Button } from "./ui/button";
 import { Alert, AlertDescription } from "./ui/alert";
-import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 
 const UserManagager = () => {
   const [operations, addOperations] = useState<number[]>([]);

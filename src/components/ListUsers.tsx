@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { User } from "../models";
-import { Card, CardContent } from "./ui/card";
+import { Card } from "./ui/card";
 import { useUsersContext } from "./UsersContext";
 
 const ListUsers = ({ onOpen }: { onOpen: (id: number) => void }) => {

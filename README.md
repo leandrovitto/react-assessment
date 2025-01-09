@@ -1,5 +1,8 @@
 # React assessment
 
+Demo Project:
+
+
 ## Goals of the assessment
 
 Evaluate the implementation of concepts related to component-based architectures, testing, and frontend related knowledge in general.
