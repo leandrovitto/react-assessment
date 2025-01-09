@@ -1,7 +1,6 @@
 # React assessment
 
-Demo Project:
-https://react-assessment-sand.vercel.app/
+[Demo Project](https://react-assessment-sand.vercel.app/)
 
 ## Goals of the assessment
 

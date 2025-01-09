@@ -34,7 +34,9 @@ const UserManagager = () => {
           variant="warning"
         >
           <AlertDescription>
-            {`Hai ${operations.length} operazioni in corso...`}
+            {`Hai ${operations.length} operazion${
+              operations.length == 1 ? "e" : "i"
+            } in corso...`}
           </AlertDescription>
         </Alert>
       )}
